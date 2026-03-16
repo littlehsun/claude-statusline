@@ -29,6 +29,14 @@ else
     ctx_part=""
 fi
 
+# Session count from /tmp/claude_proxy_locks
+LOCK_DIR="/tmp/claude_proxy_locks"
+session_part=""
+if [ -d "$LOCK_DIR" ]; then
+    SESSION_COUNT=$(find "$LOCK_DIR" -maxdepth 1 -type f 2>/dev/null | wc -l | tr -d ' ')
+    [ "$SESSION_COUNT" -gt 0 ] && session_part=" | ✷${SESSION_COUNT}"
+fi
+
 # Rate limit from /tmp/claude_rate_limit.json
 RL_FILE="/tmp/claude_rate_limit.json"
 rate_part=""
@@ -57,4 +65,4 @@ if [ -f "$RL_FILE" ] && command -v jq &>/dev/null; then
     fi
 fi
 
-printf "%s%s%s%s" "$model" "$branch_part" "$ctx_part" "$rate_part"
+printf "%s%s%s%s%s" "$model" "$branch_part" "$ctx_part" "$session_part" "$rate_part"
