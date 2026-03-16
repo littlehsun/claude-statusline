@@ -1,6 +1,7 @@
 # Claude Code Rate Limit Statusline ⚡
 
 A lightweight, zero-cost, and 100% accurate rate limit statusline for **Claude Code** (Pro / Max tiers).
+Accurately displays 5-hour and 7-day quotas for Claude Code Pro / Max plans.
 
 ## 💡 Why This Project?
 
@@ -19,7 +20,7 @@ By running a minimal local Node.js reverse proxy, we intercept and parse the `an
 
 ## 🚀 Quick Start
 
-Run the following command in your terminal to download and execute the one-click setup script. The script will automatically check for required tools (e.g., `jq`) and start the proxy server in the background.
+Run the following command in your terminal to download and execute the one-click setup script. The script will automatically check for required tools (e.g., `jq`), start the proxy server in the background, and help configure your shell.
 
 ```bash
 chmod +x setup_claude_status.sh
@@ -28,21 +29,21 @@ chmod +x setup_claude_status.sh
 
 ## 🛠️ Usage
 
-After installation, simply point Claude Code at the local proxy.
+After installation, you just need to let Claude Code know to use the local proxy.
 
-### 1. Set the environment variable
+### 1. Configure Auto-start
 
-Set `ANTHROPIC_BASE_URL` before launching Claude Code. Add this line to your shell profile to make it permanent:
+At the end of the installation script, it will detect your shell profile (`~/.zshrc` or `~/.bashrc`) and ask if you want to add the auto-start configuration:
 
-```bash
-# zsh users
-echo 'export ANTHROPIC_BASE_URL="http://localhost:8080"' >> ~/.zshrc
-
-# bash users
-echo 'export ANTHROPIC_BASE_URL="http://localhost:8080"' >> ~/.bashrc
+```
+💡 Would you like to add the Proxy auto-start to ~/.zshrc? (y/N)
 ```
 
-> The setup script will print the exact one-liner for your shell at the end — just copy and paste it.
+- **Select `y`**: Automatically writes to your profile. You'll need to run `source ~/.zshrc` (or restart your terminal) for it to take effect.
+- **Select `N` (Default)**: Displays the manual command for you to copy and paste.
+- **If shell is not detected**: It will list both zsh and bash versions for manual configuration.
+
+Once configured, every time you open a new terminal, it will automatically ensure the Proxy is running and set `ANTHROPIC_BASE_URL=http://localhost:19999`.
 
 ### 2. Launch Claude Code
 
@@ -50,7 +51,7 @@ echo 'export ANTHROPIC_BASE_URL="http://localhost:8080"' >> ~/.bashrc
 claude
 ```
 
-### 3. Bind the statusline
+### 3. Bind the Statusline
 
 Inside the Claude interface, run the following command to bind the generated script:
 
@@ -84,7 +85,9 @@ pkill -f "node claude-proxy.js"
 
 ## ⚙️ Technical Details
 
-* Proxy listens on port `8080`
-* Rate limit data path: `/tmp/claude_rate_limit.json`
-* Proxy PID path: `/tmp/claude_proxy.pid` (used for stop/restart)
-* `reset_5h` field is a Unix timestamp (not ISO 8601)
+* **Proxy Port**: `19999`
+* **Data Path**: `/tmp/claude_rate_limit.json`
+* **PID Path**: `/tmp/claude_proxy.pid` (used for management)
+* **Reset Fields**: `reset_5h` and `reset_7d` are Unix timestamps (not ISO 8601).
+* **Display Format**: `5h:<used>%(↺HH:MM) 7d:<used>%(↺MM/DD HH:MM)`
+* **Port Conflict**: The setup script automatically detects if port `19999` is already in use and provides the PID and process name for troubleshooting.

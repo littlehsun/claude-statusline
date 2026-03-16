@@ -31,19 +31,19 @@ chmod +x setup_claude_status.sh
 
 安裝完成後，你只需要讓 Claude Code 知道要走本地代理即可：
 
-### 1. 設定環境變數
+### 1. 設定自動啟動
 
-在執行 Claude Code 之前，設定 `ANTHROPIC_BASE_URL`。建議將此行加入你的 shell profile 中以永久生效：
+安裝腳本結束時會偵測你的 shell profile（`~/.zshrc` 或 `~/.bashrc`），並詢問是否直接寫入：
 
-```bash
-# zsh 使用者
-echo 'export ANTHROPIC_BASE_URL="http://localhost:8080"' >> ~/.zshrc
-
-# bash 使用者
-echo 'export ANTHROPIC_BASE_URL="http://localhost:8080"' >> ~/.bashrc
+```
+💡 是否將 Proxy 自動啟動寫入 ~/.zshrc？(y/N)
 ```
 
-> 安裝腳本結束時會自動顯示對應你 shell 的一鍵指令，直接複製貼上即可。
+- 選 `y`：自動寫入，並提示執行 `source ~/.zshrc` 讓設定立即生效
+- 選 `N`（預設）：顯示手動加入的指令供複製貼上
+- 若無法偵測 shell：分別列出 zsh 與 bash 兩種版本
+
+寫入後，每次開新 terminal 時會自動確認 Proxy 是否運行，若未運行則啟動，並設定 `ANTHROPIC_BASE_URL=http://localhost:19999`。
 
 ### 2. 啟動 Claude Code
 
@@ -85,7 +85,9 @@ pkill -f "node claude-proxy.js"
 
 ## ⚙️ 技術細節 (Technical Details)
 
-* Proxy 監聽 Port `8080`
+* Proxy 監聽 Port `19999`
 * Rate Limit 資料儲存路徑：`/tmp/claude_rate_limit.json`
 * Proxy PID 記錄路徑：`/tmp/claude_proxy.pid`（供停止/重啟使用）
-* `reset_5h` 欄位為 Unix timestamp（非 ISO 8601）
+* `reset_5h` 與 `reset_7d` 欄位皆為 Unix timestamp（非 ISO 8601）
+* Statusline 顯示格式：`5h:<used>%(↺HH:MM) 7d:<used>%(↺MM/DD HH:MM)`
+* 若 Port `19999` 已被占用，啟動腳本會自動偵測並顯示占用的 PID 與程式名稱
