@@ -118,7 +118,8 @@ claude() {
 
     ANTHROPIC_BASE_URL="http://localhost:19999" command claude "$@"
     _claude_cleanup
-}'
+}
+# end claude-proxy wrapper'
 
 if [ -n "$SHELL_PROFILE" ]; then
     echo -n "💡 是否將 Proxy 自動啟動寫入 $SHELL_PROFILE？(y/N) "
@@ -126,9 +127,27 @@ if [ -n "$SHELL_PROFILE" ]; then
     case "$REPLY" in
         [yY])
             if grep -q "# claude-proxy wrapper" "$SHELL_PROFILE" 2>/dev/null; then
-                # 移除舊的 claude wrapper（從標記注解到函式結尾的 `}`）
-                awk '/^# claude-proxy wrapper/{found=1; next} found && /^}/{found=0; next} found{next} {print}' \
-                    "$SHELL_PROFILE" > /tmp/_claude_profile_tmp && mv /tmp/_claude_profile_tmp "$SHELL_PROFILE"
+                # 移除舊的 claude wrapper（介於開始與結束標記之間的區塊）
+                awk '
+                    /^# claude-proxy wrapper/ { in_block = 1; next }
+                    /^# end claude-proxy wrapper/ {
+                        if (in_block) {
+                            in_block = 0;
+                            next;
+                        }
+                    }
+                    {
+                        if (!in_block) {
+                            print;
+                        }
+                    }
+                    END {
+                        if (in_block) {
+                            print "Warning: failed to fully remove existing claude wrapper: missing end marker # end claude-proxy wrapper" > "/dev/stderr";
+                            exit 1;
+                        }
+                    }
+                ' "$SHELL_PROFILE" > /tmp/_claude_profile_tmp && mv /tmp/_claude_profile_tmp "$SHELL_PROFILE"
                 echo "🔄 偵測到已存在的 claude wrapper，已取代為最新版本！"
             fi
             echo "$AUTOSTART_SNIPPET" >> "$SHELL_PROFILE"
