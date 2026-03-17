@@ -155,7 +155,7 @@ if [ -n "$SHELL_PROFILE" ]; then
                     }
                 '  "$SHELL_PROFILE" > "$tmp_profile"; then
                 # 如果awk成功，才執行覆蓋檔案和解除trap
-                mv "$tmp_profile" "$SHELL_PROFILE" && trap - EXIT
+                trap - EXIT && cat "$tmp_profile" > "$SHELL_PROFILE" && rm -f "$tmp_profile"
                 # 成功替換後，解除 trap
                 echo "🔄 偵測到已存在的 claude wrapper，已取代為最新版本！"
                else
