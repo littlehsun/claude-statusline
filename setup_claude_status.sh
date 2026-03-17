@@ -125,6 +125,24 @@ if [ -n "$SHELL_PROFILE" ]; then
     read -r REPLY
     case "$REPLY" in
         [yY])
+            # 檢查是否已有 claude() function，有的話取代，沒有的話 append
+            if grep -q "^claude()" "$SHELL_PROFILE" 2>/dev/null; then
+                echo "🔄 偵測到已有 claude() function，正在取代..."
+                # 用 awk 移除舊的 claude() function block，再 append 新的
+                awk '
+                    /^claude\(\)/ { in_func=1; brace_depth=0 }
+                    in_func {
+                        for (i=1; i<=length($0); i++) {
+                            c = substr($0, i, 1)
+                            if (c == "{") brace_depth++
+                            if (c == "}") brace_depth--
+                        }
+                        if (brace_depth <= 0) { in_func=0 }
+                        next
+                    }
+                    { print }
+                ' "$SHELL_PROFILE" > "${SHELL_PROFILE}.tmp" && mv "${SHELL_PROFILE}.tmp" "$SHELL_PROFILE"
+            fi
             echo "$AUTOSTART_SNIPPET" >> "$SHELL_PROFILE"
             echo "✅ 已寫入 $SHELL_PROFILE！"
             echo "👉 請執行以下指令讓設定立即生效："
