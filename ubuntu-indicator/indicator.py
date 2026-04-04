@@ -39,7 +39,7 @@ class ClaudeRateIndicator:
     def __init__(self):
         self._icon_idx = 0
         # Write initial icon so AppIndicator has a valid file path
-        Path(ICON_TMPS[0]).write_text(make_icon_svg('⚡ --', 'green'))
+        Path(ICON_TMPS[0]).write_text(make_icon_svg('--', 'green'))
 
         self.indicator = AppIndicator3.Indicator.new(
             'claude-rate-indicator',

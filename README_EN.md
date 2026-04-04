@@ -12,7 +12,7 @@ On Ubuntu / GNOME, you can also install an optional **GNOME top-bar Rate Limit I
 * **⑂ Worktree support** — automatically shows worktree name when active
 * **🎨 RGB truecolor** — dynamic color coding based on usage: green → orange → yellow → red
 * **🐧 Cross-platform** — compatible with macOS and Ubuntu/Linux
-* **🖥️ Ubuntu GNOME Indicator** (optional) — shows `⚡ 8% | 1% ⟳2h30m` in the system tray with a click-to-expand detail menu
+* **🖥️ Ubuntu GNOME Indicator** (optional) — shows `● 8%|1% ⟳2h30m` in the system tray with a click-to-expand detail menu
 
 ## 🖼️ Preview
 
@@ -26,7 +26,7 @@ Sonnet │ my-project  main !1 ↑2 │ ✍ 45%
 Ubuntu GNOME top bar (optional):
 
 ```
-⚡ 8% | 1% ⟳2h30m
+● 8%|1% ⟳2h30m
 ```
 
 ## 🚀 Quick Start

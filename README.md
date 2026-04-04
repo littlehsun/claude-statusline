@@ -12,7 +12,7 @@
 * **⑂ Worktree 支援**：使用 worktree 時自動顯示名稱
 * **🎨 RGB 全彩**：使用 truecolor ANSI 色碼，依使用率動態變色（綠 → 橙 → 黃 → 紅）
 * **🐧 雙平台支援**：自動相容 macOS 與 Ubuntu/Linux
-* **🖥️ Ubuntu GNOME 指示器**（選用）：在系統匣顯示 `⚡ 8% | 1% ⟳2h30m`，點擊展開重置時間詳情
+* **🖥️ Ubuntu GNOME 指示器**（選用）：在系統匣顯示 `● 8%|1% ⟳2h30m`，點擊展開重置時間詳情
 
 ## 🖼️ 狀態列預覽
 
@@ -24,7 +24,7 @@ Sonnet │ my-project  main !1 ↑2 │ ✍ 45%
 Ubuntu GNOME 頂部列（選用）：
 
 ```
-⚡ 8% | 1% ⟳2h30m
+● 8%|1% ⟳2h30m
 ```
 
 ## 🚀 安裝 (Quick Start)
