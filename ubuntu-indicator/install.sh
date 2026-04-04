@@ -2,8 +2,16 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BIN="$HOME/.local/bin/claude-rate-indicator"
-AUTOSTART="$HOME/.config/autostart/claude-rate-indicator.desktop"
+
+# 取得真實使用者的 home（相容 sudo 執行）
+if [[ -n "$SUDO_USER" ]]; then
+    REAL_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+else
+    REAL_HOME="$HOME"
+fi
+
+BIN="$REAL_HOME/.local/bin/claude-rate-indicator"
+AUTOSTART="$REAL_HOME/.config/autostart/claude-rate-indicator.desktop"
 
 echo "=== Claude Rate Limit Indicator 安裝 ==="
 
@@ -18,19 +26,19 @@ fi
 
 # 2. 複製執行檔
 echo "[2/4] 安裝執行檔..."
-mkdir -p "$HOME/.local/bin"
+mkdir -p "$REAL_HOME/.local/bin"
 cp "$SCRIPT_DIR/indicator.py" "$BIN"
 chmod +x "$BIN"
 
 # 3. 安裝圖示
 echo "[3/4] 安裝圖示..."
-ICON_DEST="$HOME/.local/share/icons/claude-rate-indicator"
+ICON_DEST="$REAL_HOME/.local/share/icons/claude-rate-indicator"
 mkdir -p "$ICON_DEST"
 cp "$SCRIPT_DIR/icons/"*.svg "$ICON_DEST/"
 
 # 4. Autostart
 echo "[4/4] 設定開機自動啟動..."
-mkdir -p "$HOME/.config/autostart"
+mkdir -p "$REAL_HOME/.config/autostart"
 cat > "$AUTOSTART" <<EOF
 [Desktop Entry]
 Type=Application

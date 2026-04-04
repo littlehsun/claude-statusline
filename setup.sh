@@ -2,6 +2,13 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# 取得真實使用者的 home（相容 sudo 執行）
+if [[ -n "$SUDO_USER" ]]; then
+    REAL_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+else
+    REAL_HOME="$HOME"
+fi
+
 # 檢查 jq
 if ! command -v jq &> /dev/null; then
     echo "⚠️ 找不到 jq，準備自動安裝..."
@@ -16,7 +23,7 @@ if ! command -v jq &> /dev/null; then
 fi
 
 # 決定安裝目錄
-INSTALL_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+INSTALL_DIR="${CLAUDE_CONFIG_DIR:-$REAL_HOME/.claude}"
 mkdir -p "$INSTALL_DIR"
 
 # 選擇進度條樣式
