@@ -94,6 +94,11 @@ RESET_7D_RAW=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty'
 if [ -n "$U5H" ] && [ -n "$U7D" ]; then
     INT_5H=$(awk "BEGIN {printf \"%.0f\", $U5H}")
     INT_7D=$(awk "BEGIN {printf \"%.0f\", $U7D}")
+    # Side-write for Ubuntu rate limit indicator (atomic via tmp + mv)
+    _rl_tmp=$(mktemp "$HOME/.claude/.rate_limits_live.XXXXXX" 2>/dev/null) && \
+    printf '{"utilization_5h":%s,"reset_5h":%s,"utilization_7d":%s,"reset_7d":%s,"updated_at":%s}\n' \
+        "$INT_5H" "${RESET_5H_RAW:-0}" "$INT_7D" "${RESET_7D_RAW:-0}" "$(date +%s)" \
+        > "$_rl_tmp" && mv "$_rl_tmp" "$HOME/.claude/rate_limits_live.json" || rm -f "$_rl_tmp" 2>/dev/null
     C5=$(color_for_pct "$INT_5H")
     C7=$(color_for_pct "$INT_7D")
     case "$BAR_STYLE" in

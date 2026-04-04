@@ -45,3 +45,22 @@ echo "✅ 已安裝至 $INSTALL_DIR/statusline-command.sh"
 echo ""
 echo "👉 進入 Claude Code 後執行以下指令啟用："
 echo "   /statusline $INSTALL_DIR/statusline-command.sh"
+
+# Ubuntu GNOME 狀態列指示器
+if [[ "$OSTYPE" == "linux-gnu"* ]] && command -v gnome-shell &> /dev/null; then
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "偵測到 Ubuntu / GNOME 環境"
+    echo ""
+    echo "是否安裝 Ubuntu 狀態列 Rate Limit 指示器？"
+    echo "  功能：在 GNOME 頂部列顯示 ⚡ 8% | 1% ⟳2h30m"
+    echo "  需要：gir1.2-ayatana-appindicator3-0.1"
+    echo -n "安裝？ (y/N) "
+    read -r INDICATOR_CHOICE
+    if [[ "$INDICATOR_CHOICE" =~ ^[Yy]$ ]]; then
+        bash "$SCRIPT_DIR/ubuntu-indicator/install.sh"
+    else
+        echo "略過。之後可手動執行："
+        echo "  bash $SCRIPT_DIR/ubuntu-indicator/install.sh"
+    fi
+fi
