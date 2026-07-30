@@ -2,7 +2,7 @@
 
 A statusline for **Claude Code** that displays model, folder, git status, context usage, and rate limits for Pro / Max tiers.
 
-The Ubuntu / GNOME top-bar indicator now lives in the standalone **[claude-rate-indicator](https://github.com/littlehsun/claude-rate-indicator)** project.
+For the Ubuntu / GNOME top-bar indicator, use the unified **[rate-limit-indicator](https://github.com/littlehsun/rate-limit-indicator)** project for Codex, Claude, Grok, and Gemini.
 
 ## ✨ Features
 
@@ -61,12 +61,12 @@ Send any message and the statusline will appear.
 
 Displays live usage in the GNOME system tray — visible even when Claude Code is closed.
 
-Install it independently from the `claude-rate-indicator` project:
+Install the Claude provider from `rate-limit-indicator`:
 
 ```bash
-git clone https://github.com/littlehsun/claude-rate-indicator.git
-cd claude-rate-indicator
-bash install.sh
+git clone https://github.com/littlehsun/rate-limit-indicator.git
+cd rate-limit-indicator
+./install.sh claude
 ```
 
 **Data flow:**

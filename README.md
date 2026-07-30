@@ -2,7 +2,7 @@
 
 專為 **Claude Code** 設計的增強狀態列，顯示模型名稱、資料夾、Git 狀態、Context 使用率，以及 Pro / Max 方案的速率限制。
 
-Ubuntu / GNOME 的頂部列指示器已獨立至 **[claude-rate-indicator](https://github.com/littlehsun/claude-rate-indicator)** 專案。
+Ubuntu / GNOME 的頂部列指示器請改用整合 Codex、Claude、Grok 與 Gemini 的 **[rate-limit-indicator](https://github.com/littlehsun/rate-limit-indicator)** 專案。
 
 ## ✨ 特色 (Features)
 
@@ -58,12 +58,12 @@ chmod +x setup.sh
 
 在 GNOME 頂部列系統匣顯示即時用量，即使 Claude Code 視窗已關閉也能查看。
 
-指示器由 `claude-rate-indicator` 專案獨立安裝：
+請從 `rate-limit-indicator` 安裝 Claude provider：
 
 ```bash
-git clone https://github.com/littlehsun/claude-rate-indicator.git
-cd claude-rate-indicator
-bash install.sh
+git clone https://github.com/littlehsun/rate-limit-indicator.git
+cd rate-limit-indicator
+./install.sh claude
 ```
 
 **資料流：**
