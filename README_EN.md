@@ -2,7 +2,7 @@
 
 A statusline for **Claude Code** that displays model, folder, git status, context usage, and rate limits for Pro / Max tiers.
 
-On Ubuntu / GNOME, you can also install an optional **GNOME top-bar Rate Limit Indicator** to monitor usage at a glance, even outside Claude Code.
+The Ubuntu / GNOME top-bar indicator now lives in the standalone **[claude-rate-indicator](https://github.com/littlehsun/claude-rate-indicator)** project.
 
 ## ✨ Features
 
@@ -12,7 +12,6 @@ On Ubuntu / GNOME, you can also install an optional **GNOME top-bar Rate Limit I
 * **⑂ Worktree support** — automatically shows worktree name when active
 * **🎨 RGB truecolor** — dynamic color coding based on usage: green → orange → yellow → red
 * **🐧 Cross-platform** — compatible with macOS and Ubuntu/Linux
-* **🖥️ Ubuntu GNOME Indicator** (optional) — shows `● 8%|1% ⟳2h30m` in the system tray with a click-to-expand detail menu
 
 ## 🖼️ Preview
 
@@ -26,7 +25,7 @@ Sonnet │ my-project  main !1 ↑2 │ ✍ 45%
 Ubuntu GNOME top bar (optional):
 
 ```
-● 8%|1% ⟳2h30m
+Claude logo  8%|1% ⟳2h30m
 ```
 
 ## 🚀 Quick Start
@@ -48,8 +47,6 @@ During setup, you'll be asked:
 | 2 | Circle | `●●●○○○○○○○` |
 | 3 | Half-block | `███▌░░░░░░` |
 
-2. **Ubuntu GNOME Indicator** (shown only on Linux + GNOME)
-
 Then inside Claude Code, run:
 
 ```bash
@@ -64,10 +61,12 @@ Send any message and the statusline will appear.
 
 Displays live usage in the GNOME system tray — visible even when Claude Code is closed.
 
-**Install separately:**
+Install it independently from the `claude-rate-indicator` project:
 
 ```bash
-bash ubuntu-indicator/install.sh
+git clone https://github.com/littlehsun/claude-rate-indicator.git
+cd claude-rate-indicator
+bash install.sh
 ```
 
 **Data flow:**
@@ -81,10 +80,7 @@ Claude Code statusline → ~/.claude/rate_limits_live.json → GNOME indicator (
 | File | Description |
 |------|-------------|
 | `statusline-command.sh` | Main script — displays model, git status, context, rate limits; also writes `rate_limits_live.json` |
-| `setup.sh` | Setup script — checks for `jq`, copies the script to Claude config dir, optionally installs the GNOME indicator |
-| `ubuntu-indicator/indicator.py` | GNOME AppIndicator3 daemon |
-| `ubuntu-indicator/install.sh` | Standalone indicator install script |
-| `ubuntu-indicator/icons/` | Green / yellow / red SVG icons |
+| `setup.sh` | Setup script — checks for `jq` and copies the script to the Claude config directory |
 
 ## 🙏 Credits
 
