@@ -6,6 +6,7 @@ input=$(cat)
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd')
 branch=$(git -C "$cwd" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
 model=$(echo "$input" | jq -r '.model.display_name')
+effort=$(echo "$input" | jq -r '.effort.level // empty')
 used_pct=$(echo "$input" | jq -r 'if .context_window.used_percentage != null then (.context_window.used_percentage + 0.5 | floor) | tostring else empty end')
 
 # RGB colors
@@ -82,8 +83,12 @@ if [ -n "$used_pct" ]; then
     ctx_part="${SEP}✍ ${CTX_COLOR}${used_pct}%${RESET}"
 fi
 
+# Model + effort
+model_part="${WHITE}${model}${RESET}"
+[ -n "$effort" ] && model_part="${model_part}${DIM} (${effort})${RESET}"
+
 # Line 1
-printf "%s%s%s%s\n" "${WHITE}${model}${RESET}" "$branch_part" "$worktree_part" "$ctx_part"
+printf "%s%s%s%s\n" "$model_part" "$branch_part" "$worktree_part" "$ctx_part"
 
 # Rate limits - Line 2
 U5H=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
@@ -128,10 +133,10 @@ if [ -n "$U5H" ] && [ -n "$U7D" ]; then
     R5="" R7=""
     if [ -n "$RESET_5H_RAW" ] && [ -n "$RESET_TIME_5H" ]; then
         CD5=$(fmt_countdown "$RESET_5H_RAW")
-        R5="${DIM} ⟳ ${CD5} (${RESET_TIME_5H})${RESET}"
+        R5="${DIM} ↻ ${CD5} (${RESET_TIME_5H})${RESET}"
     fi
     if [ -n "$RESET_7D_RAW" ] && [ -n "$RESET_TIME_7D" ]; then
-        R7="${DIM} ⟳ ${RESET_TIME_7D}${RESET}"
+        R7="${DIM} ↻ ${RESET_TIME_7D}${RESET}"
     fi
     printf "${DIM}5H${RESET} %s ${C5}%s%%${RESET}%s ${DIM}7D${RESET} %s ${C7}%s%%${RESET}%s\n" \
         "$BAR_5H" "$INT_5H" "$R5" "$BAR_7D" "$INT_7D" "$R7"

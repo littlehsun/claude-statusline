@@ -19,7 +19,7 @@ Claude Code statusline:
 
 ```
 Sonnet │ my-project  main !1 ↑2 │ ✍ 45%
-5H ●●●●○○○○○○ 38% ⟳ 2h15m (19:00)    7D ●●●●●●●○○○ 72% ⟳ 03/30 08:00
+5H ●●●●○○○○○○ 38% ↻ 2h15m (19:00)    7D ●●●●●●●○○○ 72% ↻ 03/30 08:00
 ```
 
 Ubuntu GNOME top bar (optional):
